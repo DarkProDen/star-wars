@@ -1,0 +1,27 @@
+.slideshow {
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+}
+
+.slideshow__img {
+  width: 200px;
+  margin-right: 20px;
+}
+
+.slideshow__title {
+  margin-bottom: 20px;
+}
+
+.slideshow__fields-wrap {
+  margin-left: 20px;
+}
+
+.slideshow__field {
+  border-bottom: 1px solid gray;
+  padding: 5px 0;
+}
+
+.slideshow__field:last-child {
+  border-bottom: none;
+}
