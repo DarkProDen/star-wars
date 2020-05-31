@@ -6,6 +6,7 @@ function Slideshow() {
     <div className="card slideshow">
       <img
         src="https://starwars-visualguide.com/assets/img/planets/3.jpg"
+        alt="Image not found"
         className="slideshow__img card-img"
       />
       <div>
