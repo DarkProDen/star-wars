@@ -1,0 +1,20 @@
+.unit-info {
+  width: calc(50% - 15px);
+  min-width: max-content;
+  display: flex;
+  flex-direction: row;
+}
+
+.unit-info__img {
+  width: 160px;
+  margin-right: 20px;
+}
+
+.unit-info__field {
+  border-bottom: 1px solid gray;
+  padding: 5px 0;
+}
+
+.unit-info__field:last-child {
+  border-bottom: none;
+}

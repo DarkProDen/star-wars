@@ -6,7 +6,7 @@ function Slideshow() {
     <div className="card slideshow">
       <img
         src="https://starwars-visualguide.com/assets/img/planets/3.jpg"
-        className="card-img slideshow__img"
+        className="slideshow__img card-img"
       />
       <div>
         <h4 className="slideshow__title">Planet name</h4>

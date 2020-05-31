@@ -1,7 +1,8 @@
 .slideshow {
-  padding: 20px;
   display: flex;
   flex-direction: row;
+  margin-bottom: 20px;
+  min-width: max-content;
 }
 
 .slideshow__img {
