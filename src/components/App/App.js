@@ -5,7 +5,7 @@ import Slideshow from '../Slideshow';
 import UnitsList from '../UnitsList';
 import UnitInfo from '../UnitInfo';
 import fetchUnitsList from '../../API/fetchUnitsList';
-import { peopleURL, planetsURL, starhipsURL } from '../../API/URLs';
+import { peopleURL } from '../../API/URLs';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,8 +13,6 @@ class App extends React.Component {
     this.state = {
       unitsListError: false,
       unitsList: [],
-      planetsListError: false,
-      planetsList: [],
     };
   }
 
@@ -30,18 +28,7 @@ class App extends React.Component {
       });
   };
 
-  loadPlanetsList() {
-    fetchUnitsList(planetsURL)
-      .then((result) => {
-        this.setState({ planetsList: result, planetsListError: false });
-      })
-      .catch(() => {
-        this.setState({ planetsListError: true });
-      });
-  }
-
   componentDidMount() {
-    this.loadPlanetsList();
     this.loadUnitsList(peopleURL);
   }
 
@@ -49,11 +36,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <NavMenu loadUnitsList={this.loadUnitsList} />
-        {this.state.planetsListError ? (
-          <div>Error :(</div>
-        ) : (
-          <Slideshow planetsList={this.state.planetsList} />
-        )}
+        {this.state.planetsListError ? <div>Error :(</div> : <Slideshow />}
         <div className="unit-wrap">
           {this.state.unitsListError ? (
             <div>Error :(</div>

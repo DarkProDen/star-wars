@@ -1,21 +1,47 @@
 import React from 'react';
 import './Slideshow.css';
-import { render } from 'react-dom';
+import fetchUnitsList from '../../API/fetchUnitsList';
+import { planetsURL } from '../../API/URLs';
+import getImagePath from '../../API/getImagePath';
+import getRandomInt from '../../misc/getRandomInt';
 
 class Slideshow extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      planetsList: props.planetsList,
-      currentPlanet: props.planetsList[0],
+      planetsList: [],
+      planetsListError: false,
+      currentPlanet: null,
     };
   }
 
+  loadPlanetsList() {
+    fetchUnitsList(planetsURL)
+      .then((result) => {
+        this.setState((state) => {
+          return {
+            planetsList: result,
+            currentPlanet: result[0],
+            planetsListError: false,
+          };
+        });
+      })
+      .catch(() => {
+        this.setState({ planetsListError: true });
+      });
+  }
+
   componentDidMount() {
+    this.loadPlanetsList();
     setInterval(() => {
-      this.setState({ currentPlanet: this.state.planetsList[4] });
-    }, 1000);
+      this.setState((state) => {
+        return {
+          currentPlanet:
+            state.planetsList[getRandomInt(state.planetsList.length)],
+        };
+      });
+    }, 3000);
   }
 
   render() {
@@ -23,19 +49,31 @@ class Slideshow extends React.Component {
 
     return (
       <div className="card slideshow">
-        <img
-          src="https://starwars-visualguide.com/assets/img/planets/3.jpg"
-          alt="Image not found"
-          className="slideshow__img card-img"
-        />
-        <div>
-          <h4 className="slideshow__title">currentPlanet.name</h4>
-          <div className="slideshow__fields-wrap">
-            <div className="slideshow__field">Population</div>
-            <div className="slideshow__field">Rotation period</div>
-            <div className="slideshow__field">Diameter</div>
-          </div>
-        </div>
+        {currentPlanet ? (
+          <>
+            <img
+              src={currentPlanet ? getImagePath(currentPlanet) : null}
+              alt="Image not found"
+              className="slideshow__img card-img"
+            />
+            <div>
+              <h4 className="slideshow__title">{currentPlanet.name}</h4>
+              <div className="slideshow__fields-wrap">
+                <div className="slideshow__field">
+                  Population: {currentPlanet.population}
+                </div>
+                <div className="slideshow__field">
+                  Rotation period: {currentPlanet.rotation_period}
+                </div>
+                <div className="slideshow__field">
+                  Diameter: {currentPlanet.diameter}
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          'Loading...'
+        )}
       </div>
     );
   }
