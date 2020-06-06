@@ -1,47 +1,55 @@
 import React from 'react';
 import './Slideshow.css';
-import fetchUnitsList from '../../API/fetchUnitsList';
-import { planetsURL } from '../../API/URLs';
-import getImagePath from '../../API/getImagePath';
-import getRandomInt from '../../misc/getRandomInt';
+import BackendService from '../../API/BackendService';
+import ErrorStar from '../ErrorStar';
+import Loader from '../Loader';
 
 class Slideshow extends React.Component {
   constructor(props) {
     super(props);
 
+    this.backendService = new BackendService();
+
     this.state = {
-      planetsList: [],
-      planetsListError: false,
+      planetError: false,
+      errorMessage: null,
       currentPlanet: null,
+      interval: null,
     };
   }
 
-  loadPlanetsList() {
-    fetchUnitsList(planetsURL)
+  loadRandomPlanet = () => {
+    this.setState(() => ({
+      currentPlanet: null,
+      planetError: false,
+    }));
+
+    this.backendService
+      .getRandomPlanet()
       .then((result) => {
-        this.setState((state) => {
-          return {
-            planetsList: result,
-            currentPlanet: result[0],
-            planetsListError: false,
-          };
-        });
+        this.setState(() => ({
+          currentPlanet: result,
+          planetError: false,
+        }));
       })
-      .catch(() => {
-        this.setState({ planetsListError: true });
+      .catch((e) => {
+        this.setState(() => ({
+          planetError: true,
+          errorMessage: e.message,
+        }));
       });
-  }
+  };
 
   componentDidMount() {
-    this.loadPlanetsList();
-    setInterval(() => {
-      this.setState((state) => {
-        return {
-          currentPlanet:
-            state.planetsList[getRandomInt(state.planetsList.length)],
-        };
-      });
-    }, 3000);
+    this.loadRandomPlanet();
+
+    const interval = setInterval(this.loadRandomPlanet, 2000);
+
+    this.setState({ interval: interval });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
   }
 
   render() {
@@ -52,7 +60,11 @@ class Slideshow extends React.Component {
         {currentPlanet ? (
           <>
             <img
-              src={currentPlanet ? getImagePath(currentPlanet) : null}
+              src={
+                currentPlanet
+                  ? this.backendService.getImagePath(currentPlanet)
+                  : null
+              }
               alt="Image not found"
               className="slideshow__img card-img"
             />
@@ -71,8 +83,10 @@ class Slideshow extends React.Component {
               </div>
             </div>
           </>
+        ) : this.state.planetError ? (
+          <ErrorStar errorMessage={this.state.errorMessage} />
         ) : (
-          'Loading...'
+          <Loader />
         )}
       </div>
     );

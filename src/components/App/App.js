@@ -4,44 +4,52 @@ import NavMenu from '../NavMenu';
 import Slideshow from '../Slideshow';
 import UnitsList from '../UnitsList';
 import UnitInfo from '../UnitInfo';
-import fetchUnitsList from '../../API/fetchUnitsList';
-import { peopleURL } from '../../API/URLs';
+import ErrorStar from '../ErrorStar';
+import Loader from '../Loader';
+import BackendService from '../../API/BackendService';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.backendService = new BackendService();
     this.state = {
       unitsListError: false,
+      unitsListErrorMessage: null,
       unitsList: [],
     };
   }
 
-  loadUnitsList = (url) => {
+  loadUnitsList = () => {
     this.setState({ unitsList: [] });
 
-    fetchUnitsList(url)
+    this.backendService
+      .getPeopleList()
       .then((result) => {
         this.setState({ unitsList: result, unitsListError: false });
       })
-      .catch(() => {
-        this.setState({ unitsListError: true });
+      .catch((e) => {
+        this.setState({
+          unitsListError: true,
+          unitsListErrorMessage: e.message,
+        });
       });
   };
 
   componentDidMount() {
-    this.loadUnitsList(peopleURL);
+    this.loadUnitsList();
   }
 
   render() {
     return (
       <div className="App">
-        <NavMenu loadUnitsList={this.loadUnitsList} />
-        {this.state.planetsListError ? <div>Error :(</div> : <Slideshow />}
+        <NavMenu />
+        <Slideshow />
         <div className="unit-wrap">
           {this.state.unitsListError ? (
-            <div>Error :(</div>
+            <ErrorStar errorMessage={this.state.unitsListErrorMessage} />
           ) : this.state.unitsList.length === 0 ? (
-            <div>Loading...</div>
+            <Loader />
           ) : (
             <UnitsList unitsList={this.state.unitsList} />
           )}
