@@ -1,0 +1,11 @@
+.error-star {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.error-star__img {
+  width: 200px;
+  margin-right: 30px;
+}

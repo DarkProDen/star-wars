@@ -1,0 +1,9 @@
+.nav-menu {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.nav-menu__home {
+  margin-right: 45px;
+}

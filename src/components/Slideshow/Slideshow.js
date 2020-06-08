@@ -1,0 +1,96 @@
+import React from 'react';
+import './Slideshow.css';
+import BackendService from '../../API/BackendService';
+import ErrorStar from '../ErrorStar';
+import Loader from '../Loader';
+
+class Slideshow extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.backendService = new BackendService();
+
+    this.state = {
+      planetError: false,
+      errorMessage: null,
+      currentPlanet: null,
+      interval: null,
+    };
+  }
+
+  loadRandomPlanet = () => {
+    this.setState(() => ({
+      currentPlanet: null,
+      planetError: false,
+    }));
+
+    this.backendService
+      .getRandomPlanet()
+      .then((result) => {
+        this.setState(() => ({
+          currentPlanet: result,
+          planetError: false,
+        }));
+      })
+      .catch((e) => {
+        this.setState(() => ({
+          planetError: true,
+          errorMessage: e.message,
+        }));
+      });
+  };
+
+  componentDidMount() {
+    this.loadRandomPlanet();
+
+    const interval = setInterval(this.loadRandomPlanet, 2000);
+
+    this.setState({ interval: interval });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
+  }
+
+  render() {
+    const currentPlanet = this.state.currentPlanet;
+
+    return (
+      <div className="card slideshow">
+        {currentPlanet ? (
+          <>
+            <img
+              src={
+                currentPlanet
+                  ? this.backendService.getImagePath(currentPlanet)
+                  : null
+              }
+              alt="Image not found"
+              className="slideshow__img card-img"
+            />
+            <div>
+              <h4 className="slideshow__title">{currentPlanet.name}</h4>
+              <div className="slideshow__fields-wrap">
+                <div className="slideshow__field">
+                  Population: {currentPlanet.population}
+                </div>
+                <div className="slideshow__field">
+                  Rotation period: {currentPlanet.rotation_period}
+                </div>
+                <div className="slideshow__field">
+                  Diameter: {currentPlanet.diameter}
+                </div>
+              </div>
+            </div>
+          </>
+        ) : this.state.planetError ? (
+          <ErrorStar errorMessage={this.state.errorMessage} />
+        ) : (
+          <Loader />
+        )}
+      </div>
+    );
+  }
+}
+
+export default Slideshow;
