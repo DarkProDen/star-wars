@@ -41,18 +41,24 @@ class App extends React.Component {
   }
 
   render() {
+    const getUnitsListOrLoadingOrError = () => {
+      if (this.state.unitsListError) {
+        return <ErrorStar errorMessage={this.state.unitsListErrorMessage} />;
+      }
+
+      if (this.state.unitsList.length === 0) {
+        return <Loader />;
+      }
+
+      return <UnitsList unitsList={this.state.unitsList} />;
+    };
+
     return (
       <div className="App">
         <NavMenu />
         <Slideshow />
         <div className="unit-wrap">
-          {this.state.unitsListError ? (
-            <ErrorStar errorMessage={this.state.unitsListErrorMessage} />
-          ) : this.state.unitsList.length === 0 ? (
-            <Loader />
-          ) : (
-            <UnitsList unitsList={this.state.unitsList} />
-          )}
+          {getUnitsListOrLoadingOrError()}
           <UnitInfo
             fields={[
               { name: 'fieldName1', value: 'value1' },
