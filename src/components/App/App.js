@@ -7,6 +7,7 @@ import UnitInfo from '../UnitInfo';
 import ErrorStar from '../ErrorStar';
 import Loader from '../Loader';
 import BackendService from '../../API/BackendService';
+import Row from '../Row';
 
 class App extends React.Component {
   constructor(props) {
@@ -57,16 +58,18 @@ class App extends React.Component {
       <div className="App">
         <NavMenu />
         <Slideshow />
-        <div className="unit-wrap">
-          {getUnitsListOrLoadingOrError()}
-          <UnitInfo
-            fields={[
-              { name: 'fieldName1', value: 'value1' },
-              { name: 'fieldName2', value: 'value2' },
-              { name: 'fieldName3', value: 'value3' },
-            ]}
-          />
-        </div>
+        <Row
+          left={getUnitsListOrLoadingOrError()}
+          right={
+            <UnitInfo
+              fields={[
+                { name: 'fieldName1', value: 'value1' },
+                { name: 'fieldName2', value: 'value2' },
+                { name: 'fieldName3', value: 'value3' },
+              ]}
+            />
+          }
+        />
       </div>
     );
   }
