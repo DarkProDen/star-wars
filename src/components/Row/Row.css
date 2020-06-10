@@ -6,6 +6,7 @@
 .row > * {
   width: calc(50% - 15px);
   min-width: max-content;
+  margin-bottom: 20px;
 }
 
 .row > *:first-child {
