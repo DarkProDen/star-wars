@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import NavMenu from '../NavMenu';
 import Slideshow from '../Slideshow';
 import UnitInfo from '../UnitInfo';
