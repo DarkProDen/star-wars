@@ -1,0 +1,12 @@
+.units-list {
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.units-list__unit {
+  color: #fff;
+  background-color: #303030;
+  text-align: start;
+  padding-left: 20px;
+  padding-right: 20px;
+}

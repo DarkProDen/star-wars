@@ -1,13 +1,19 @@
 import React from 'react';
-import UnitButton from '../UnitButton';
+import './UnitsList.css';
 
 function UnitsList(props) {
   return (
-    <div className="btn-group-vertical units-list">
-      {props.unitsList.map((unitEntity) => {
-        return <UnitButton key={unitEntity.name} unitEntity={unitEntity} />;
-      })}
-    </div>
+    <ul className="btn-group-vertical units-list">
+      {props.unitsList.map((unitEntity) => (
+        <li
+          key={unitEntity.name}
+          className="btn btn-outline-secondary units-list__unit"
+          tabindex="0"
+        >
+          {unitEntity.name}
+        </li>
+      ))}
+    </ul>
   );
 }
 

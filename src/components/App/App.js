@@ -7,6 +7,7 @@ import UnitInfo from '../UnitInfo';
 import ErrorStar from '../ErrorStar';
 import Loader from '../Loader';
 import BackendService from '../../API/BackendService';
+import Row from '../Row';
 
 class App extends React.Component {
   constructor(props) {
@@ -41,26 +42,34 @@ class App extends React.Component {
   }
 
   render() {
+    const getUnitsListOrLoadingOrError = () => {
+      if (this.state.unitsListError) {
+        return <ErrorStar errorMessage={this.state.unitsListErrorMessage} />;
+      }
+
+      if (this.state.unitsList.length === 0) {
+        return <Loader />;
+      }
+
+      return <UnitsList unitsList={this.state.unitsList} />;
+    };
+
     return (
       <div className="App">
         <NavMenu />
         <Slideshow />
-        <div className="unit-wrap">
-          {this.state.unitsListError ? (
-            <ErrorStar errorMessage={this.state.unitsListErrorMessage} />
-          ) : this.state.unitsList.length === 0 ? (
-            <Loader />
-          ) : (
-            <UnitsList unitsList={this.state.unitsList} />
-          )}
-          <UnitInfo
-            fields={[
-              { name: 'fieldName1', value: 'value1' },
-              { name: 'fieldName2', value: 'value2' },
-              { name: 'fieldName3', value: 'value3' },
-            ]}
-          />
-        </div>
+        <Row
+          left={getUnitsListOrLoadingOrError()}
+          right={
+            <UnitInfo
+              fields={[
+                { name: 'fieldName1', value: 'value1' },
+                { name: 'fieldName2', value: 'value2' },
+                { name: 'fieldName3', value: 'value3' },
+              ]}
+            />
+          }
+        />
       </div>
     );
   }

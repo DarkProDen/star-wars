@@ -1,0 +1,13 @@
+.row {
+  align-items: flex-start;
+  margin: 0;
+}
+
+.row > * {
+  width: calc(50% - 15px);
+  min-width: max-content;
+}
+
+.row > *:first-child {
+  margin-right: 30px;
+}
