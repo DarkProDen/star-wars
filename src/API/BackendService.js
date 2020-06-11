@@ -25,17 +25,17 @@ export default class BackendService {
     return res;
   }
 
-  async getPeopleList() {
+  getPeopleList = async () => {
     const res = await this._getData(this.COMMON_API_URL + this.PEOPLE_URL);
 
     return res.results;
-  }
+  };
 
-  async getPlanetsList() {
+  getPlanetsList = async () => {
     const res = await this._getData(this.COMMON_API_URL + this.PLANETS_URL);
 
     return res.results;
-  }
+  };
 
   async _getData(url) {
     const response = await fetch(url);
