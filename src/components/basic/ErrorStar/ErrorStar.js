@@ -1,6 +1,6 @@
 import React from 'react';
 import './ErrorStar.css';
-import deathStarImg from '../../assets/img/DeathStar.png';
+import deathStarImg from '../../../assets/img/DeathStar.png';
 
 function ErrorStar(props) {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import './Slideshow.css';
-import BackendService from '../../API/BackendService';
+import BackendService from '../../../API/BackendService';
 import Loader from '../Loader';
 
 class Slideshow extends React.Component {
@@ -71,8 +71,8 @@ class Slideshow extends React.Component {
             </div>
           </>
         ) : (
-          <Loader />
-        )}
+            <Loader />
+          )}
       </div>
     );
   }
