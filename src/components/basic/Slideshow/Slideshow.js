@@ -32,7 +32,7 @@ class Slideshow extends React.Component {
 
     const interval = setInterval(this.loadRandomPlanet, 2000);
 
-    this.setState({ interval: interval });
+    this.setState({ interval });
   }
 
   componentWillUnmount() {
@@ -40,7 +40,7 @@ class Slideshow extends React.Component {
   }
 
   render() {
-    const currentPlanet = this.state.currentPlanet;
+    const { currentPlanet } = this.state;
 
     return (
       <div className="card slideshow">
@@ -71,8 +71,8 @@ class Slideshow extends React.Component {
             </div>
           </>
         ) : (
-            <Loader />
-          )}
+          <Loader />
+        )}
       </div>
     );
   }

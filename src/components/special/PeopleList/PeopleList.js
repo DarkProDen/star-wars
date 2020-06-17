@@ -1,18 +1,17 @@
-import React from 'react';
 import UnitsList from '../../common/UnitsList';
+import withData from '../../higherOrder/withData';
+import withRenderFunction from '../../higherOrder/withRenderFunction';
+import BackendService from '../../../API/BackendService';
 
-class PeopleList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+const backendService = new BackendService();
 
-  getCapture(person) {
-    return `${person.name}, eye color: ${person.eye_color}`;
-  }
-
-  render() {
-    return <UnitsList data={this.props.data} getCapture={this.getCapture} />;
-  }
+function getCapture(person) {
+  return `${person.name}, eye color: ${person.eye_color}`;
 }
+
+const PeopleList = withData(
+  withRenderFunction(UnitsList, getCapture),
+  backendService.getPeopleList,
+);
 
 export default PeopleList;

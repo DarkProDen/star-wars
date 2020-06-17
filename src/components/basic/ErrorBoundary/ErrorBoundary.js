@@ -15,13 +15,10 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
-    const errorMessage = this.state.errorMessage;
+    const { errorMessage } = this.state;
+    const { children } = this.props;
 
-    return errorMessage ? (
-      <ErrorStar errorMessage={errorMessage} />
-    ) : (
-      this.props.children
-    );
+    return errorMessage ? <ErrorStar errorMessage={errorMessage} /> : children;
   }
 }
 

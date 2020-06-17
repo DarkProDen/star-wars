@@ -7,15 +7,17 @@ class UnitsList extends React.Component {
   }
 
   render() {
+    const { data, renderFunction } = this.props;
+
     return (
       <ul className="btn-group-vertical units-list">
-        {this.props.data.map((unitEntity) => (
+        {data.map((unitEntity) => (
           <li
             key={unitEntity.name}
             className="btn btn-outline-secondary units-list__unit"
             tabIndex="0"
           >
-            {this.props.getCapture(unitEntity)}
+            {renderFunction(unitEntity)}
           </li>
         ))}
       </ul>

@@ -24,9 +24,12 @@ function withData(WrappedComponent, getData) {
     }
 
     render() {
-      return this.state.data ? (
-        <WrappedComponent data={this.state.data}>
-          {this.props.children}
+      const { data } = this.state;
+      const { children } = this.props;
+
+      return data ? (
+        <WrappedComponent data={data} {...this.props}>
+          {children}
         </WrappedComponent>
       ) : (
         <Loader />

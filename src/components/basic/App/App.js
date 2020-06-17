@@ -18,14 +18,6 @@ class App extends React.Component {
   }
 
   render() {
-    const PeopleListWithData = withData(
-      PeopleList,
-      this.backendService.getPeopleList,
-    );
-    const PlanetsListWithData = withData(
-      PlanetsList,
-      this.backendService.getPlanetsList,
-    );
     const RandomPlanetInfo = withData(
       UnitInfo,
       this.backendService.getRandomPlanet,
@@ -42,7 +34,7 @@ class App extends React.Component {
         <Row
           left={
             <ErrorBoundary>
-              <PeopleListWithData />
+              <PlanetsList />
             </ErrorBoundary>
           }
           right={
