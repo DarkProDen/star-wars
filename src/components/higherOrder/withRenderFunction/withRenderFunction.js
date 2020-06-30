@@ -1,7 +1,8 @@
 import React from 'react';
+import getDisplayName from '../../../misc/getDisplayName';
 
 function withRenderFunction(WrappedComponent, renderFunction) {
-  return class extends React.Component {
+  class WithRenderFunction extends React.Component {
     constructor(props) {
       super(props);
     }
@@ -15,7 +16,13 @@ function withRenderFunction(WrappedComponent, renderFunction) {
         </WrappedComponent>
       );
     }
-  };
+  }
+
+  WithRenderFunction.displayName = `WithRenderFunction(${getDisplayName(
+    WrappedComponent,
+  )})`;
+
+  return WithRenderFunction;
 }
 
 export default withRenderFunction;

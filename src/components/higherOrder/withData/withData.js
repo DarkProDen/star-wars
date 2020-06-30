@@ -1,8 +1,9 @@
 import React from 'react';
 import Loader from '../../basic/Loader';
+import getDisplayName from '../../../misc/getDisplayName';
 
 function withData(WrappedComponent, getData) {
-  return class extends React.Component {
+  class WithData extends React.Component {
     constructor(props) {
       super(props);
 
@@ -35,7 +36,11 @@ function withData(WrappedComponent, getData) {
         <Loader />
       );
     }
-  };
+  }
+
+  WithData.displayName = `WithData(${getDisplayName(WrappedComponent)})`;
+
+  return WithData;
 }
 
 export default withData;
