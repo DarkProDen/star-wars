@@ -2,10 +2,6 @@ import React from 'react';
 import './UnitsList.css';
 
 class UnitsList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { data, renderFunction } = this.props;
 
