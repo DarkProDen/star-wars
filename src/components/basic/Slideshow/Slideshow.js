@@ -30,7 +30,10 @@ class Slideshow extends React.Component {
   componentDidMount() {
     this.loadRandomPlanet();
 
-    const interval = setInterval(this.loadRandomPlanet, 2000);
+    const interval = setInterval(
+      this.loadRandomPlanet,
+      this.props.milliseconds,
+    );
 
     this.setState({ interval });
   }
@@ -77,5 +80,9 @@ class Slideshow extends React.Component {
     );
   }
 }
+
+Slideshow.defaultProps = {
+  milliseconds: 2000,
+};
 
 export default Slideshow;
