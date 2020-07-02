@@ -1,14 +1,13 @@
 import React from 'react';
-import BackendServiceContext from '../../contexts/BackendServiceContext';
 import withData from '../../higherOrder/withData';
 import UnitInfo from '../../common/UnitInfo';
 import Record from '../../common/Record';
+import withBackendService from '../../higherOrder/withBackendService';
 
 class RandomPlanetInfo extends React.Component {
   render() {
-    const RandomPlanetInfoWithData = withData(
-      UnitInfo,
-      this.context.getRandomPlanet,
+    const RandomPlanetInfoWithData = withBackendService(
+      withData(UnitInfo, 'getRandomPlanet'),
     );
 
     return (
@@ -20,7 +19,5 @@ class RandomPlanetInfo extends React.Component {
     );
   }
 }
-
-RandomPlanetInfo.contextType = BackendServiceContext;
 
 export default RandomPlanetInfo;

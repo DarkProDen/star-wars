@@ -1,17 +1,14 @@
 import UnitsList from '../../common/UnitsList';
 import withData from '../../higherOrder/withData';
 import withRenderFunction from '../../higherOrder/withRenderFunction';
-import BackendService from '../../../API/BackendService';
-
-const backendService = new BackendService();
+import withBackendService from '../../higherOrder/withBackendService';
 
 function getCapture(planet) {
   return `${planet.name}, population: ${planet.population}`;
 }
 
-const PlanetsList = withData(
-  withRenderFunction(UnitsList, getCapture),
-  backendService.getPlanetsList,
+const PlanetsList = withBackendService(
+  withData(withRenderFunction(UnitsList, getCapture), 'getPlanetsList'),
 );
 
 export default PlanetsList;
