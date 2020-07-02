@@ -2,6 +2,7 @@ import React from 'react';
 import './Slideshow.css';
 import BackendService from '../../../API/BackendService';
 import Loader from '../Loader';
+import PropTypes from 'prop-types';
 
 class Slideshow extends React.Component {
   constructor(props) {
@@ -83,6 +84,10 @@ class Slideshow extends React.Component {
 
 Slideshow.defaultProps = {
   milliseconds: 2000,
+};
+
+Slideshow.propTypes = {
+  milliseconds: PropTypes.number,
 };
 
 export default Slideshow;
