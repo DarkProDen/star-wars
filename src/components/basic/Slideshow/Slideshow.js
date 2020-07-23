@@ -1,61 +1,38 @@
 import React from 'react';
 import './Slideshow.css';
-import BackendService from '../../../API/BackendService';
 import Loader from '../Loader';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import {
+  loadRandomPlanet,
+  setInterval,
+  clearInterval,
+} from '../../../redux/actions/slideshow';
+import BackendService from '../../../API/BackendService';
+
+const getImagePath = BackendService.prototype.getImagePath;
 
 class Slideshow extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.backendService = new BackendService();
-
-    this.state = {
-      currentPlanet: null,
-      interval: null,
-    };
-  }
-
-  loadRandomPlanet = () => {
-    this.setState(() => ({
-      currentPlanet: null,
-    }));
-
-    this.backendService.getRandomPlanet().then((result) => {
-      this.setState(() => ({
-        currentPlanet: result,
-      }));
-    });
-  };
-
   componentDidMount() {
-    this.loadRandomPlanet();
+    const { loadRandomPlanet, setInterval, milliseconds } = this.props;
 
-    const interval = setInterval(
-      this.loadRandomPlanet,
-      this.props.milliseconds,
-    );
-
-    this.setState({ interval });
+    loadRandomPlanet();
+    setInterval(milliseconds);
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.interval);
+    this.props.clearInterval();
   }
 
   render() {
-    const { currentPlanet } = this.state;
+    const currentPlanet = this.props.currentPlanet;
 
     return (
       <div className="card slideshow">
         {currentPlanet ? (
           <>
             <img
-              src={
-                currentPlanet
-                  ? this.backendService.getImagePath(currentPlanet)
-                  : null
-              }
+              src={currentPlanet ? getImagePath(currentPlanet) : null}
               alt="Image not found"
               className="slideshow__img card-img"
             />
@@ -90,4 +67,16 @@ Slideshow.propTypes = {
   milliseconds: PropTypes.number,
 };
 
-export default Slideshow;
+const mapStateToProps = (state) => {
+  return {
+    currentPlanet: state.slideshow.currentPlanet,
+  };
+};
+
+const mapDispatchToProps = {
+  loadRandomPlanet,
+  setInterval,
+  clearInterval,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Slideshow);
