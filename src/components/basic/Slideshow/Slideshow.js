@@ -1,8 +1,8 @@
 import React from 'react';
 import './Slideshow.css';
-import BackendService from '../../API/BackendService';
-import ErrorStar from '../ErrorStar';
+import BackendService from '../../../API/BackendService';
 import Loader from '../Loader';
+import PropTypes from 'prop-types';
 
 class Slideshow extends React.Component {
   constructor(props) {
@@ -11,8 +11,6 @@ class Slideshow extends React.Component {
     this.backendService = new BackendService();
 
     this.state = {
-      planetError: false,
-      errorMessage: null,
       currentPlanet: null,
       interval: null,
     };
@@ -21,31 +19,24 @@ class Slideshow extends React.Component {
   loadRandomPlanet = () => {
     this.setState(() => ({
       currentPlanet: null,
-      planetError: false,
     }));
 
-    this.backendService
-      .getRandomPlanet()
-      .then((result) => {
-        this.setState(() => ({
-          currentPlanet: result,
-          planetError: false,
-        }));
-      })
-      .catch((e) => {
-        this.setState(() => ({
-          planetError: true,
-          errorMessage: e.message,
-        }));
-      });
+    this.backendService.getRandomPlanet().then((result) => {
+      this.setState(() => ({
+        currentPlanet: result,
+      }));
+    });
   };
 
   componentDidMount() {
     this.loadRandomPlanet();
 
-    const interval = setInterval(this.loadRandomPlanet, 2000);
+    const interval = setInterval(
+      this.loadRandomPlanet,
+      this.props.milliseconds,
+    );
 
-    this.setState({ interval: interval });
+    this.setState({ interval });
   }
 
   componentWillUnmount() {
@@ -53,7 +44,7 @@ class Slideshow extends React.Component {
   }
 
   render() {
-    const currentPlanet = this.state.currentPlanet;
+    const { currentPlanet } = this.state;
 
     return (
       <div className="card slideshow">
@@ -83,8 +74,6 @@ class Slideshow extends React.Component {
               </div>
             </div>
           </>
-        ) : this.state.planetError ? (
-          <ErrorStar errorMessage={this.state.errorMessage} />
         ) : (
           <Loader />
         )}
@@ -92,5 +81,13 @@ class Slideshow extends React.Component {
     );
   }
 }
+
+Slideshow.defaultProps = {
+  milliseconds: 2000,
+};
+
+Slideshow.propTypes = {
+  milliseconds: PropTypes.number,
+};
 
 export default Slideshow;
