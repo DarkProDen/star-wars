@@ -5,34 +5,40 @@ import Row from '../Row';
 import ErrorBoundary from '../ErrorBoundary';
 import PeopleList from '../../special/PeopleList';
 import PlanetsList from '../../special/PlanetsList';
-import RandomPlanetInfo from '../../special/RandomPlanetInfo/RandomPlanetInfo';
 import BackendServiceContext from '../../contexts/BackendServiceContext';
 import BackendService from '../../../API/BackendService';
+import { Route, BrowserRouter } from 'react-router-dom';
+import StarhipsList from '../../special/StarshipsList';
+import PlanetInfo from '../../special/PlanetInfo';
 
 function App(props) {
   return (
-    <div className="App">
-      <ErrorBoundary>
-        <NavMenu />
-      </ErrorBoundary>
-      <ErrorBoundary>
-        <Slideshow />
-      </ErrorBoundary>
-      <Row
-        left={
-          <ErrorBoundary>
-            <PlanetsList />
-          </ErrorBoundary>
-        }
-        right={
-          <ErrorBoundary>
-            <BackendServiceContext.Provider value={new BackendService()}>
-              <RandomPlanetInfo />
-            </BackendServiceContext.Provider>
-          </ErrorBoundary>
-        }
-      />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <ErrorBoundary>
+          <NavMenu />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Slideshow />
+        </ErrorBoundary>
+        <Row
+          left={
+            <ErrorBoundary>
+              <Route path="/planets" component={PlanetsList} />
+              <Route path="/people" component={PeopleList} />
+              <Route path="/starships" component={StarhipsList} />
+            </ErrorBoundary>
+          }
+          right={
+            <ErrorBoundary>
+              <BackendServiceContext.Provider value={new BackendService()}>
+                <Route exact path="/planets/:id" component={PlanetInfo} />
+              </BackendServiceContext.Provider>
+            </ErrorBoundary>
+          }
+        />
+      </div>
+    </BrowserRouter>
   );
 }
 

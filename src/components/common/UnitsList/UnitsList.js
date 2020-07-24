@@ -1,21 +1,23 @@
 import React from 'react';
 import './UnitsList.css';
+import { NavLink } from 'react-router-dom';
 
 function UnitsList(props) {
-  const { data, renderFunction } = props;
+  const { data, renderFunction, backendService } = props;
 
   return (
-    <ul className="btn-group-vertical units-list">
+    <div className="btn-group-vertical units-list">
       {data.map((unitEntity) => (
-        <li
+        <NavLink
+          to={backendService.getId(unitEntity)}
           key={unitEntity.name}
           className="btn btn-outline-secondary units-list__unit"
           tabIndex="0"
         >
           {renderFunction(unitEntity)}
-        </li>
+        </NavLink>
       ))}
-    </ul>
+    </div>
   );
 }
 

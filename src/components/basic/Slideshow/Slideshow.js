@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import './Slideshow.css';
 import Loader from '../Loader';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   loadRandomPlanet,
@@ -10,11 +9,10 @@ import {
 } from '../../../redux/actions/slideshow';
 import BackendService from '../../../API/BackendService';
 
-const getImagePath = BackendService.prototype.getImagePath;
-
 function Slideshow({ milliseconds }) {
   const currentPlanet = useSelector((state) => state.slideshow.currentPlanet);
   const dispatch = useDispatch();
+  const backendService = new BackendService();
 
   useEffect(() => {
     dispatch(loadRandomPlanet());
@@ -30,7 +28,9 @@ function Slideshow({ milliseconds }) {
       {currentPlanet ? (
         <>
           <img
-            src={currentPlanet ? getImagePath(currentPlanet) : null}
+            src={
+              currentPlanet ? backendService.getImagePath(currentPlanet) : null
+            }
             alt="Image not found"
             className="slideshow__img card-img"
           />

@@ -6,11 +6,12 @@ export default class BackendService {
   PLANETS_URL = 'planets/';
   STARSHIPS_URL = 'starships/';
 
+  getId(unit) {
+    return unit.url.substring(20, unit.url.length - 1);
+  }
+
   getImagePath(unit) {
-    return `https://starwars-visualguide.com/assets/img${unit.url.substring(
-      20,
-      unit.url.length - 1,
-    )}.jpg`;
+    return `https://starwars-visualguide.com/assets/img${this.getId(unit)}.jpg`;
   }
 
   getRandomPlanet = () => {
@@ -33,6 +34,12 @@ export default class BackendService {
 
   getPlanetsList = async () => {
     const res = await this._getData(this.COMMON_API_URL + this.PLANETS_URL);
+
+    return res.results;
+  };
+
+  getStarshipsList = async () => {
+    const res = await this._getData(this.COMMON_API_URL + this.STARSHIPS_URL);
 
     return res.results;
   };
