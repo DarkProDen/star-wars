@@ -9,7 +9,7 @@ function UnitsList(props) {
     <div className="btn-group-vertical units-list">
       {data.map((unitEntity) => (
         <NavLink
-          to={backendService.getId(unitEntity)}
+          to={backendService.getPath(unitEntity)}
           key={unitEntity.name}
           className="btn btn-outline-secondary units-list__unit"
           tabIndex="0"

@@ -10,7 +10,8 @@ import BackendService from '../../../API/BackendService';
 import { Route, BrowserRouter } from 'react-router-dom';
 import StarhipsList from '../../special/StarshipsList';
 import PlanetInfo from '../../special/PlanetInfo';
-import ErrorStar from '../ErrorStar';
+import StarshipInfo from '../../special/StarshipInfo';
+import CharacterInfo from '../../special/CharacterInfo';
 
 function App(props) {
   return (
@@ -34,8 +35,8 @@ function App(props) {
             <ErrorBoundary>
               <BackendServiceContext.Provider value={new BackendService()}>
                 <Route path="/planets/:id" component={PlanetInfo} />
-                <Route path="/people/:id" component={ErrorStar} />
-                <Route path="/starships/:id" component={ErrorStar} />
+                <Route path="/people/:id" component={CharacterInfo} />
+                <Route path="/starships/:id" component={StarshipInfo} />
               </BackendServiceContext.Provider>
             </ErrorBoundary>
           }
