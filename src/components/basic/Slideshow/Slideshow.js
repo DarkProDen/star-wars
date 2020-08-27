@@ -1,93 +1,59 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Slideshow.css';
-import BackendService from '../../../API/BackendService';
 import Loader from '../Loader';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  loadRandomPlanet,
+  setInterval,
+  clearInterval,
+} from '../../../redux/actions/slideshow';
+import BackendService from '../../../API/BackendService';
 
-class Slideshow extends React.Component {
-  constructor(props) {
-    super(props);
+function Slideshow({ milliseconds }) {
+  const currentPlanet = useSelector((state) => state.slideshow.currentPlanet);
+  const dispatch = useDispatch();
+  const backendService = new BackendService();
 
-    this.backendService = new BackendService();
+  useEffect(() => {
+    dispatch(loadRandomPlanet());
+    dispatch(setInterval(milliseconds || 2000));
 
-    this.state = {
-      currentPlanet: null,
-      interval: null,
+    return function componentWillUnmount() {
+      dispatch(clearInterval());
     };
-  }
+  }, []);
 
-  loadRandomPlanet = () => {
-    this.setState(() => ({
-      currentPlanet: null,
-    }));
-
-    this.backendService.getRandomPlanet().then((result) => {
-      this.setState(() => ({
-        currentPlanet: result,
-      }));
-    });
-  };
-
-  componentDidMount() {
-    this.loadRandomPlanet();
-
-    const interval = setInterval(
-      this.loadRandomPlanet,
-      this.props.milliseconds,
-    );
-
-    this.setState({ interval });
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.interval);
-  }
-
-  render() {
-    const { currentPlanet } = this.state;
-
-    return (
-      <div className="card slideshow">
-        {currentPlanet ? (
-          <>
-            <img
-              src={
-                currentPlanet
-                  ? this.backendService.getImagePath(currentPlanet)
-                  : null
-              }
-              alt="Image not found"
-              className="slideshow__img card-img"
-            />
-            <div>
-              <h4 className="slideshow__title">{currentPlanet.name}</h4>
-              <div className="slideshow__fields-wrap">
-                <div className="slideshow__field">
-                  Population: {currentPlanet.population}
-                </div>
-                <div className="slideshow__field">
-                  Rotation period: {currentPlanet.rotation_period}
-                </div>
-                <div className="slideshow__field">
-                  Diameter: {currentPlanet.diameter}
-                </div>
+  return (
+    <div className="card slideshow">
+      {currentPlanet ? (
+        <>
+          <img
+            src={
+              currentPlanet ? backendService.getImagePath(currentPlanet) : null
+            }
+            alt="Image not found"
+            className="slideshow__img card-img"
+          />
+          <div>
+            <h4 className="slideshow__title">{currentPlanet.name}</h4>
+            <div className="slideshow__fields-wrap">
+              <div className="slideshow__field">
+                Population: {currentPlanet.population}
+              </div>
+              <div className="slideshow__field">
+                Rotation period: {currentPlanet.rotation_period}
+              </div>
+              <div className="slideshow__field">
+                Diameter: {currentPlanet.diameter}
               </div>
             </div>
-          </>
-        ) : (
-          <Loader />
-        )}
-      </div>
-    );
-  }
+          </div>
+        </>
+      ) : (
+        <Loader />
+      )}
+    </div>
+  );
 }
-
-Slideshow.defaultProps = {
-  milliseconds: 2000,
-};
-
-Slideshow.propTypes = {
-  milliseconds: PropTypes.number,
-};
 
 export default Slideshow;

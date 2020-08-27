@@ -2,7 +2,7 @@ import React from 'react';
 import Loader from '../../basic/Loader';
 import getDisplayName from '../../../misc/getDisplayName';
 
-function withData(WrappedComponent, getDataName) {
+function withData(WrappedComponent, getDataName, ...args) {
   class WithData extends React.Component {
     constructor(props) {
       super(props);
@@ -15,7 +15,7 @@ function withData(WrappedComponent, getDataName) {
     loadData = () => {
       this.setState({ data: null });
 
-      this.props.backendService[getDataName]().then((result) => {
+      this.props.backendService[getDataName](...args).then((result) => {
         this.setState({ data: result });
       });
     };

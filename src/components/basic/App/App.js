@@ -5,13 +5,17 @@ import Row from '../Row';
 import ErrorBoundary from '../ErrorBoundary';
 import PeopleList from '../../special/PeopleList';
 import PlanetsList from '../../special/PlanetsList';
-import RandomPlanetInfo from '../../special/RandomPlanetInfo/RandomPlanetInfo';
 import BackendServiceContext from '../../contexts/BackendServiceContext';
 import BackendService from '../../../API/BackendService';
+import { Route, BrowserRouter } from 'react-router-dom';
+import StarhipsList from '../../special/StarshipsList';
+import PlanetInfo from '../../special/PlanetInfo';
+import StarshipInfo from '../../special/StarshipInfo';
+import CharacterInfo from '../../special/CharacterInfo';
 
-class App extends React.Component {
-  render() {
-    return (
+function App(props) {
+  return (
+    <BrowserRouter>
       <div className="App">
         <ErrorBoundary>
           <NavMenu />
@@ -22,20 +26,24 @@ class App extends React.Component {
         <Row
           left={
             <ErrorBoundary>
-              <PlanetsList />
+              <Route path="/planets" component={PlanetsList} />
+              <Route path="/people" component={PeopleList} />
+              <Route path="/starships" component={StarhipsList} />
             </ErrorBoundary>
           }
           right={
             <ErrorBoundary>
               <BackendServiceContext.Provider value={new BackendService()}>
-                <RandomPlanetInfo />
+                <Route path="/planets/:id" component={PlanetInfo} />
+                <Route path="/people/:id" component={CharacterInfo} />
+                <Route path="/starships/:id" component={StarshipInfo} />
               </BackendServiceContext.Provider>
             </ErrorBoundary>
           }
         />
       </div>
-    );
-  }
+    </BrowserRouter>
+  );
 }
 
 export default App;

@@ -6,24 +6,9 @@ function NavMenu(props) {
   return (
     <nav className="nav-menu">
       <h2 className="nav-menu__home">StarWars</h2>
-      <NavMenuItem
-        text="People"
-        clickHandler={(e) => {
-          e.preventDefault();
-        }}
-      />
-      <NavMenuItem
-        text="Planets"
-        clickHandler={(e) => {
-          e.preventDefault();
-        }}
-      />
-      <NavMenuItem
-        text="Starships"
-        clickHandler={(e) => {
-          e.preventDefault();
-        }}
-      />
+      <NavMenuItem text="People" path="/people" />
+      <NavMenuItem text="Planets" path="/planets" />
+      <NavMenuItem text="Starships" path="/starships" />
     </nav>
   );
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 import './NavMenuItem.css';
+import { NavLink } from 'react-router-dom';
 
-function NavMenuItem(props) {
+function NavMenuItem({ path, text }) {
   return (
-    <a href="/" onClick={props.clickHandler} className="nav-menu__item">
-      {props.text}
-    </a>
+    <NavLink to={path} className="nav-menu__item">
+      {text}
+    </NavLink>
   );
 }
 
